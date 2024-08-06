@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 Module for redacting sensitive fields in log messages.
 
