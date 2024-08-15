@@ -4,7 +4,7 @@
 
 import bcrypt
 from db import DB
-from sqlalchemy.exc import NoResultFound 
+from sqlalchemy.exc import NoResultFound
 from user import User
 
 
@@ -18,10 +18,10 @@ class Auth:
     def _hash_password(self, password: str) -> bytes:
         """
         Hashes a password using bcrypt and returns the hashed password.
-        
+
         Args:
             password (str): The password to hash.
-            
+
         Returns:
             bytes: The salted hash of the password.
         """
@@ -30,14 +30,14 @@ class Auth:
     def register_user(self, email: str, password: str) -> User:
         """
         Registers a user with the provided email and password.
-        
+
         Args:
             email (str): The user's email.
             password (str): The user's password.
-        
+
         Returns:
             User: The newly created User object.
-        
+
         Raises:
             ValueError: If a user with the provided email already exists.
         """
@@ -47,4 +47,3 @@ class Auth:
         except NoResultFound:
             hashed_password = self._hash_password(password)
             return self._db.add_user(email, hashed_password)
-
