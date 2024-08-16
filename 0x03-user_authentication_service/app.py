@@ -1,49 +1,52 @@
 #!/usr/bin/env python3
 """
-Basic Flask application for user authentication service.
+A simple Flask app with user authentication features.
 
-This module sets up a Flask web application with routes for
-registering users and returning JSON responses.
+This module defines a basic Flask application that includes
+routes for welcoming users and registering new users.
 """
 
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 from auth import Auth
 
 app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})
 AUTH = Auth()
 
-@app.route("/", methods=["GET"])
-def index():
+
+@app.route('/', methods=['GET'], strict_slashes=False)
+def index() -> str:
     """
-    GET route for the root URL.
+    GET / - Root endpoint
 
     Returns:
-        A JSON response with a welcome message.
+        str: JSON response with a welcome message.
     """
     return jsonify({"message": "Bienvenue"})
 
-@app.route("/users", methods=["POST"])
-def users():
-    """
-    POST route to register a new user.
 
-    Expects form data fields: 'email' and 'password'.
-    
+@app.route('/users', methods=['POST'], strict_slashes=False)
+def users() -> str:
+    """
+    POST /users - Register a new user
+
+    Expects:
+        - email (str): The user's email address.
+        - password (str): The user's password.
+
     Returns:
-        A JSON response with a success message if the user is created,
+        str: JSON response with the account creation message
         or an error message if the email is already registered.
     """
-    email = request.form.get("email")
-    password = request.form.get("password")
-
-    if not email or not password:
-        abort(400, description="Missing email or password")
+    email, password = request.form.get("email"), request.form.get("password")
 
     try:
-        user = AUTH.register_user(email, password)
-        return jsonify({"email": user.email, "message": "user created"}), 201
+        AUTH.register_user(email, password)
+        return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port="5000")
