@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+
 """Auth module
 """
-
 import bcrypt
 from db import DB
 from sqlalchemy.exc import NoResultFound
@@ -9,14 +9,14 @@ from user import User
 
 
 def _hash_password(self, password: str) -> bytes:
-        """
+    """
     Hashes a password using bcrypt and returns the hashed password.
     Args:
-    password (str): The password to hash.
+        password (str): The password to hash.
 
     Returns:
-    bytes: The salted hash of the password.
-     """
+        bytes: The salted hash of the password.
+    """
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
 
