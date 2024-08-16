@@ -10,14 +10,12 @@ from user import User
 
 def _hash_password(password: str) -> bytes:
     """
-    Hashes a password using bcrypt and returns the hashed password.
+    Hashes a password string and returns it in bytes form
     Args:
-        password (str): The password to hash.
-
-    Returns:
-        bytes: The salted hash of the password.
+        password (str): password in string format
     """
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    passwd = password.encode('utf-8')
+    return bcrypt.hashpw(passwd, bcrypt.gensalt())
 
 
 class Auth:
